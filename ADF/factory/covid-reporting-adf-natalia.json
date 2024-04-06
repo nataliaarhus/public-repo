@@ -1,0 +1,9 @@
+{
+	"name": "covid-reporting-adf-natalia",
+	"location": "westeurope",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "cc44846d-a9fe-43c3-a50d-d519a206b804",
+		"tenantId": "a1b2ae53-3955-4251-b494-1cba20369d6a"
+	}
+}
