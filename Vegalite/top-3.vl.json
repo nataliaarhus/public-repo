@@ -1,0 +1,160 @@
+{
+    "data": {"name": "dataset"},
+    "width": 160,
+    "height": 90,
+    "transform": [
+      {
+        "calculate": "round(datum['Avg Team Value1'])",
+        "as": "avg_team_rounded"
+      },
+      {
+        "calculate": "'Average: ' + format(datum['avg_team_rounded'], ',')",
+        "as": "average_label"
+      },
+      {
+        "calculate": "length(datum['name']) > 17 ? slice(datum['name'],0,15) + '...' : datum['name']",
+        "as": "name_short"
+      },
+      {
+        "calculate": "datum['Value1 TopN LY'] > 0 ? datum['Value1 TopN'] / datum['Value1 TopN LY'] - 1 : 'N/A'",
+        "as": "change_last_year"
+      },
+      {
+        "calculate": "format(datum['Value1 TopN'], '.0f')",
+        "as": "top_3_formatted"
+      },
+       {
+        "calculate": "datum['change_last_year'] > 0 ? datum['top_3_formatted'] + ' (▲ +' + format(datum['change_last_year'], '.0%') + ' LY)' : datum['change_last_year'] < 0 ? datum['top_3_formatted'] + ' (▼ ' + format(datum['change_last_year'], '.0%') + ' LY)' : datum['top_3_formatted']",
+        "as": "Value1 label"
+      }
+      ],
+    "layer": [
+      {
+        "description": "Last year bar",
+        "mark": {
+          "type": "bar", 
+          "color": "#7D92AE",
+          "size": 15
+        },
+        "encoding": {
+          "x": {
+            "field": "Value1 TopN LY"}
+        }
+      },
+      {
+      "description": "Actual Value1 bar",
+      "mark": {
+          "type": "bar",
+          "color": "#141729", 
+          "size": 10
+        },
+      "encoding": {
+          "x": {
+            "field": "Value1 TopN"}
+        }
+      },
+      {
+        "description": "Average line",
+        "mark": {
+          "type": "tick", 
+          "color": "black"
+          },
+        "encoding": {
+          "x": {
+            "field": "Avg Team Value1"
+            }
+          }
+      },
+      {
+        "description": "Actual label",
+        "mark": {
+          "type": "text",
+          "style": "label",
+          "xOffset":25
+          },
+        "encoding": {
+          "text": {
+            "field": "Value1 TopN",
+            "format": "#,0",
+            "formatType": "pbiFormat"
+            }
+          }
+      },
+      {
+        "description": "Average label",
+        "mark": {
+          "type": "text", 
+          "yOffset": -49,
+          "font": "segoe ui light",
+          "fontSize": 8,
+          "fontWeight": "normal"
+          },
+        "encoding": {
+          "x": {
+            "field": "Avg Team Value1"
+          },
+          "y": {
+            "field": ""
+          },
+          "text": {
+            "field": "average_label"
+            }
+          }
+      }
+      ],
+    "encoding": {
+      "y": {
+        "field": "name_short",
+        "type": "nominal",
+        "title": null,
+        "sort": {
+            "op": "sum", 
+            "field": "Value1 TopN",
+            "order": "descending"
+          },
+        "axis": {
+          "labelAlign": "left"
+        }
+      },
+      "x": {
+        "field": "Value1 TopN",
+        "type": "quantitative",
+        "axis": {
+          "title": null,
+          "orient": "bottom",
+          "tickCount": 3,
+          "labelFontSize": 10,
+          "labelExpr": 
+          "datum.value < 1000 ? format( datum.value, '#,' ) : datum.value < 1000000 ? format( datum.value/1000, '#,' ) + 'K' : format( datum.value/1000000, '#,' ) + 'M'"}
+      },
+      "opacity": {
+        "condition": {
+          "test": {
+            "field": "__selected__",
+            "equal": "off"
+          },
+          "value": 0.2
+        },
+        "value": 1
+      },
+      "tooltip": [
+        {
+          "field": "name",
+          "title": "name"
+        },
+        {
+          "field": "Value1 label",
+          "title": "Value1"
+        }
+        ]
+    },
+    "config": {
+      "style": {
+        "label": {
+          "align": "right",
+          "baseline": "middle",
+          "dx": -3
+        }
+      }
+    }
+  }

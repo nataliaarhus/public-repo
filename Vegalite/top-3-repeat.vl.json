@@ -1,0 +1,170 @@
+{
+  "data": {"name": "dataset"},
+  "width": 150,
+  "height": 95,
+  "transform": [
+    {
+      "calculate": "'Conversion'",
+      "as": "conversion_label"
+    },
+    {
+      "calculate": "length(datum['name1']) > 17 ? slice(datum['name1'],0,15) + '...' : datum['name1']",
+      "as": "name_short"
+    }
+    ],
+  "repeat": {
+    "layer": ["Value2","Value1"]
+  },
+  "spec": {
+    "layer": [
+      {
+        "description": "Data bars",
+        "mark": {
+          "type": "bar",
+          "size": 10
+        },
+        "encoding": {
+        "tooltip": [
+            {
+              "field": "Value", 
+              "title": "Value"
+            },
+            {
+              "field": "Rate", 
+              "title": "Rate",
+              "format": "#.0%",
+              "formatType": "pbiFormat"
+            },
+            {
+              "field": "Median", 
+              "title": "Median",
+              "format": "#.0f"
+            }
+          ],
+        "y": {
+          "field": "name_short",
+          "type": "nominal",
+          "title": null,
+          "axis": {
+            "labelAlign": "left"
+          },
+          "sort": {
+            "op": "sum", 
+            "field": "Rank",
+            "order": "ascending"
+          }
+        },
+        "x": {
+          "field": {"repeat": "layer"},
+          "type": "quantitative",
+          "axis": {
+            "title": null,
+            "orient": "bottom",
+            "tickCount": 0,
+            "labelFontSize": 10
+          }
+        },
+        "yOffset": {"datum": {"repeat": "layer"}},
+        "color": {
+            "datum": {"repeat": "layer"},
+            "scale": {
+              "range": ["#141728", "#7D92AE"]
+            },
+            "legend": {
+              "orient": "bottom",
+              "direction": "vertical",
+              "offset": 10
+            }
+        },
+        "opacity": {
+            "condition": {
+              "test": {
+                "field": "__selected__",
+                "equal": "off"
+              },
+              "value": 0.2
+            },
+            "value": 1
+          }
+        }
+      },
+      {
+        "description": "Label Value",
+        "mark": {
+          "type": "text",
+          "yOffset": 5,
+          "xOffset": 5,
+          "fontSize": 10
+          },
+        "encoding": {
+          "y": {
+            "field": "name_short",
+            "sort": {
+              "op": "sum", 
+              "field": "Rank",
+              "order": "ascending"
+              }
+            },
+          "x": {
+            "field": "Value1", 
+            "type": "quantitative"
+          },
+         "text": {
+            "field": "Value1"
+            }
+          }
+      },
+      {
+        "description": "Label2",
+        "mark": {
+          "type": "text",
+          "yOffset": -5,
+          "xOffset": 5,
+          "fontSize": 10
+          },
+        "encoding": {
+          "y": {
+            "field": "name",
+            "sort": {
+              "op": "sum", 
+              "field": "Rank",
+              "order": "ascending"
+              }
+            },
+          "x": {
+            "field": "Value2", 
+            "type": "quantitative"
+          },
+         "text": {
+            "field": "Value2"
+            }
+          }
+      },
+      {
+        "description": "Label Rate",
+        "mark": {
+          "type": "text",
+          "yOffset": 0,
+          "xOffset": 105,
+          "fontSize": 10,
+          "fontStyle": "italic"
+          },
+        "encoding": {
+          "y": {
+            "field": "name",
+            "sort": {
+              "op": "sum", 
+              "field": "Rank",
+              "order": "ascending"
+              }
+            },
+         "text": {
+            "field": "Rate",
+            "format": "#.0%",
+            "formatType": "pbiFormat"
+            }
+          }
+      }
+      ]
+  }
+}
